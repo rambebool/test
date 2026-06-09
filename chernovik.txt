@@ -1,0 +1,15 @@
+def attack_hero(hero1, hero2):
+    print(f"⚔️\t^{hero1['name']}^ АТАКОВАЛ ГЕРОЯ ^{hero2['name']}^")
+    # крит
+    critical_damage_flag = random.randint(0, 1)
+    if (critical_damage_flag == 1):
+        critical_damage = random.randint(20, 30) 
+        hero2["hp"] = hero2["hp"] - critical_damage
+        print(f"Бам! Ты получил критический удар в размере {critical_damage}!")
+    elif (critical_damage_flag == 0):
+        print("\tКритического удара не случилось.")
+        hero2["hp"] = hero2["hp"] - hero1["damage"]
+        print(f"💥\t^{hero2['name']}^ ПОЛУЧИЛ УРОН В РАЗМЕРЕ: * {hero1['damage']} *")
+        print(f"❤️\tЗДОРОВЬЕ-героя ^{hero2['name']}^: * {hero2['hp']} *")
+    # крит
+    return

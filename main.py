@@ -1,5 +1,9 @@
 import random
 import time
+from rich import print
+from rich.panel import Panel
+from rich.console import Console
+console = Console()
 
 # .lower
 # random.randint
@@ -16,45 +20,81 @@ def struct_player(name, hp, damage, level):
     return player
 
 def create_hero():
-    name = input("Введите ИМЯ героя: ")
+    name = input(f"Введите ИМЯ героя: ")
+    level = 0
     damage = random.randint(1, 10)
     while True:
         try:
-            hp = int(input("❤️\tВведите УРОВЕНЬ ЗДОРОВЬЯ героя: "))
+            hp = int(input(f"Введите УРОВЕНЬ ЗДОРОВЬЯ героя: "))
         except ValueError:
             print("Ввести можно только числа. Повторите попытку: ")
             continue
-        level = 0
         player = struct_player(name, hp, damage, level)
         return player
     
-def attack_hero(hero1, hero2):
-    print(f"⚔️\t^{hero1['name']}^ АТАКОВАЛ ГЕРОЯ ^{hero2['name']}^")
-    count_hp = hero2["hp"] - hero1["damage"]
-    total_damage = hero1["damage"]
-    print(f"💥\t^{hero2['name']}^ ПОЛУЧИЛ УРОН В РАЗМЕРЕ: * {hero1['damage']} *")
-    print(f"❤️\tЗДОРОВЬЕ-героя ^{hero2['name']}^: * {count_hp} *")
-    return count_hp, total_damage
+def who_is_attacker(hero1, hero2):
+    attacker_flag = random.randint(0, 1)
+    if (attacker_flag == 1):
+        attacker = hero1
+        defender = hero2
+    elif (attacker_flag == 0):
+        attacker = hero2
+        defender = hero1
+
+    return attacker, defender
+
+def attack_hero(attacker, defender):
+
+    critical_damage_flag = random.randint(0, 1)
+
+    if (critical_damage_flag == 1):
+        critical_damage = random.randint(20, 30) 
+
+        if (critical_damage >= 26):
+            print(f"ВОУ! Прямое попадание в головёшку игрока {defender['name']} в размере {critical_damage}")
+            defender["hp"] = defender["hp"] - critical_damage
+            print(f"[green]ЗДОРОВЬЕ[/] [bold magenta]{defender['name']}: {defender['hp']}[/]")
+            print(f"[green]ЗДОРОВЬЕ[/] [bold magenta]{attacker['name']}: {attacker['hp']}[/]")
+        elif (critical_damage <= 25):
+            print(f"{defender['name']} получил леща в размере {critical_damage}")
+            defender["hp"] = defender["hp"] - critical_damage
+            print(f"[green]ЗДОРОВЬЕ[/] [bold magenta]{defender['name']}: {defender['hp']}[/]")
+            print(f"[green]ЗДОРОВЬЕ[/] [bold magenta]{attacker['name']}: {attacker['hp']}[/]")
+    if (critical_damage_flag == 0):
+        print(f"\tКритического удара не случилось.")
+        defender["hp"] = defender["hp"] - attacker["damage"]
+        print(f"{defender['name']} ПОЛУЧИЛ УРОН В РАЗМЕРЕ: {attacker['damage']}")
+        print(f"[green]ЗДОРОВЬЕ[/] [bold magenta]{defender['name']}: {defender['hp']}[/]")
+        print(f"[green]ЗДОРОВЬЕ[/] [bold magenta]{attacker['name']}: {attacker['hp']}[/]")
+
+    return
+
+def who_lose(hero_1, hero_2):
+    if (hero_1["hp"] <= 0):
+        print(f"ЭТОТ БОЙ ПРОИГРАЛ {hero_1['name']}")
+        exit()
+    if (hero_2["hp"] <= 0):
+        print(f"ЭТОТ БОЙ ПРОИГРАЛ {hero_2['name']}")
+        exit()
 
 hero_1 = create_hero()
 hero_2 = create_hero()
+attacker, defender = who_is_attacker(hero_1, hero_2)
 
-print("\n\t------[СПИСОК ГЕРОЕВ]------")
-print(f"ИМЯ: {hero_1['name']}, ХП: {hero_1['hp']}, ДАМАГ: {hero_1['damage']}, УРОВЕНЬ: {hero_1['level']}")
-print(f"ИМЯ: {hero_2['name']}, ХП: {hero_2['hp']}, ДАМАГ: {hero_2['damage']}, УРОВЕНЬ: {hero_2['level']}")
-print("\t------[СПИСОК ГЕРОЕВ]------")
+print(Panel(f"ИМЯ: {attacker['name']}, ХП: {attacker['hp']}, ДАМАГ: {attacker['damage']}, УРОВЕНЬ: {attacker['level']}", title="Герой 1"))
+print(Panel(f"ИМЯ: {defender['name']}, ХП: {defender['hp']}, ДАМАГ: {defender['damage']}, УРОВЕНЬ: {defender['level']}", title="Герой 2"))
 
-is_hero_1_turn = True
-is_hero_2_turn = False
-
-while (hero_1["hp"] <= 0):
-    choise = input(f"Атаковать героя {hero_2['name']}?\nВведите 'да' или 'нет' > ")
+while(attacker["hp"] > 0 and defender["hp"] > 0):
+    print(f"\n\t[bold red]атакует:[/] [bold magenta]{attacker['name']}[/]\n\t[bold dark_orange]держит удар:[/] [bold magenta]{defender['name']}[/]\n")
+    
+    choise = console.input(f"[bold red]{attacker['name']}[/], [bold dark_orange]атаковать героя[/] [bold magenta]{defender['name']}?[/]\n[bold blue]Введите 'да' или 'нет' > [/]")
     if (choise.lower() == 'да'):
         print("Идёт атака...")
-        time.sleep(5)
-        attack_hero(hero_1, hero_2)
-    elif (choise.lower() == 'нет'):
-        print(f"Вы не атаковали героя.")
-        print(f"ХП героя {hero_2['name']}: {hero_2['hp']}")
-    else:
-        print("Выход из игры.")
+        time.sleep(1)
+        attack_hero(attacker, defender)
+        attacker, defender = who_is_attacker(hero_1, hero_2)
+    elif (choise.lower() == 'выход'):
+        print(f"Инициирован выход из игры.")
+        exit()
+
+who_lose(hero_1, hero_2)
