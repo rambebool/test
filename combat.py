@@ -46,19 +46,25 @@ def attack_hero(attacker, defender):
 
 def tactical_back(hero):
     flag_back = random.randint(0, 2)
-
+    max_hp = 100
     if (flag_back == 0):
         bounty_random = random.randint(1, 3)
         hero["gold"] = hero["gold"] + bounty_random
         print(f"{hero['name']} нашёл золотую монетку (+{bounty_random}, баланс: {hero['gold']})")
     elif (flag_back == 1):
         health_random = random.randint(5, 15)
-        hero["hp"] = hero["hp"] + health_random
-        print(f"{hero['name']} удалось подлечиться! (+{health_random}, здорововье: {hero['hp']})")
+        new_hp = hero["hp"] + health_random
+        if (new_hp >= 100):
+            new_hp = new_hp - 100
+            hero["hp"] = 100
+            print(f"{hero['name']} выпало зелье лечения в размере {health_random}HP, но было добавлено {new_hp}HP")
+        else:
+            hero["hp"] = hero["hp"] + health_random
+            print(f"{hero['name']} удалось подлечиться! (+{health_random}, здорововье: {hero['hp']})")
     elif (flag_back == 2):
         print(f"{hero['name']} не удалось подлатать раны или найти монетку.. (здоровье: {hero['hp']}, баланс: {hero['gold']})")
 
-    return
+    return hero
 
 
 
