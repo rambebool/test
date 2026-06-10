@@ -44,6 +44,24 @@ def attack_hero(attacker, defender):
             print(f"[green]ЗДОРОВЬЕ[/] [bold magenta]{attacker['name']}: {attacker['hp']}[/]")
     return
 
+def tactical_back(hero):
+    flag_back = random.randint(0, 2)
+
+    if (flag_back == 0):
+        bounty_random = random.randint(1, 3)
+        hero["gold"] = hero["gold"] + bounty_random
+        print(f"{hero['name']} нашёл золотую монетку (+{bounty_random}, баланс: {hero['gold']})")
+    elif (flag_back == 1):
+        health_random = random.randint(5, 15)
+        hero["hp"] = hero["hp"] + health_random
+        print(f"{hero['name']} удалось подлечиться! (+{health_random}, здорововье: {hero['hp']})")
+    elif (flag_back == 2):
+        print(f"{hero['name']} не удалось подлатать раны или найти монетку.. (здоровье: {hero['hp']}, баланс: {hero['gold']})")
+
+    return
+
+
+
 def who_lose(hero_1, hero_2):
     if (hero_1["hp"] <= 0):
         print(f"ЭТОТ БОЙ ПРОИГРАЛ {hero_1['name']}")
