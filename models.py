@@ -34,32 +34,24 @@ def count_heroes():
             subprocess.run('cls', shell=True)
         return count_hero
 
-def create_struct_hero():
+def create_struct_hero(count_hero):
     subprocess.run('cls', shell=True)
     
-    name = console.input(f"[bold white]Введите[/] [bold magenta]ИМЯ[/] [bold white]героя:[/] ")
-    gold = 5
-    level = 0
-    damage = random.randint(1, 10)
-    hp = 100
-    player = struct_player(name, hp, damage, level, gold)
-    print(f"\t[bold cyan]..персонаж[/] [bold magenta]{name}[/] [bold cyan]создаётся!\n\tЖдите...[/]")
-    time.sleep(2)
-    return player
+    total_range = count_hero
+    list_heroes = []
 
-def create_hero_cycle():
-
-    total_heroes = count_heroes()
-    all_heroes = []
-
-    for i in range(total_heroes):
-        create_hero()
-        count =+ 1
-
-        
-
-
-    return
+    for i in range(total_range):
+        name = console.input(f"[bold white]Введите[/] [bold magenta]ИМЯ[/] [bold white]героя:[/] ")
+        gold = 5
+        level = 0
+        damage = random.randint(1, 10)
+        hp = 100
+        player = struct_player(name, hp, damage, level, gold)
+        print(f"\t[bold cyan]..персонаж[/] [bold magenta]{name}[/] [bold cyan]создаётся!\n\tЖдите...[/]")
+        new_hero = struct_player(name, hp, damage, level, gold)
+        list_heroes.append(new_hero)
+        time.sleep(2)
+    return list_heroes
     
 def shop_items(hero):
     print(f"\n\n\n[bold cyan][МАГАЗИН][/] [bold white]{hero['name']}, ваш баланс:[/] [bold gold1]{hero['gold']}[/]")
