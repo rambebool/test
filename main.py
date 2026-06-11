@@ -8,11 +8,12 @@ import os
 import subprocess
 
 # своя логика
-from models import struct_player, create_hero, shop_items
+from models import struct_player, count_heroes, create_struct_hero, shop_items
 from combat import who_is_attacker, attack_hero, tactical_back, who_lose
 
-hero_1 = create_hero()
-hero_2 = create_hero()
+hero_1 = create_struct_hero()
+hero_2 = create_struct_hero()
+# count_heroes????????
 attacker, defender = who_is_attacker(hero_1, hero_2)
 subprocess.run('cls', shell=True)
 
@@ -23,7 +24,7 @@ while(attacker["hp"] > 0 and defender["hp"] > 0):
     #print(f"\n\t[bold red]атакует:[/] [bold magenta]{attacker['name']}[/]\n\t[bold dark_orange]держит удар:[/] [bold magenta]{defender['name']}[/]\n")
     
     print(f"[bold red]{attacker['name']}[/], твоя очередь [bold dark_orange]атаковать героя[/] [bold magenta]{defender['name']}![/]")
-    choise = console.input(f"[bold blue]Введите 'АТАКА' или 'НАЗАД'! [bold red](или 'МАГАЗ' для доступа в МАГАЗИН): [/]")
+    choise = console.input(f"[bold blue]Введите 'АТАКА' или 'НАЗАД'! [bold red](или [bold blue]'МАГАЗ'[/] для доступа в МАГАЗИН): [/]")
 
     if (choise.lower() == 'магаз'):
         subprocess.run('cls', shell=True)

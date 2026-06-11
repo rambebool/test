@@ -16,23 +16,50 @@ def struct_player(name, hp, damage, level, gold):
 }
     return player
 
-def create_hero():
+def count_heroes():
+    while (True):
+        try:
+            count_hero = int(console.input(f"[bold khaki1]Введите кол-во игроков (не менее 2): [/]"))
+        except ValueError:
+            subprocess.run('cls', shell=True)
+            print(f"[bold red][ошибка][/] [bold khaki1]Некорректное значение (вы точно ввели число?).[/]")
+            continue
+        if (count_hero < 2):
+            subprocess.run('cls', shell=True)
+            print("Игроков не может быть менее, чем 2!")
+            continue
+        else:
+            print(f"[bold thistle1]Вы задали количество игроков: {count_hero}\nЗапускаем игру!")
+            time.sleep(2)
+            subprocess.run('cls', shell=True)
+        return count_hero
+
+def create_struct_hero():
     subprocess.run('cls', shell=True)
+    
     name = console.input(f"[bold white]Введите[/] [bold magenta]ИМЯ[/] [bold white]героя:[/] ")
     gold = 5
     level = 0
     damage = random.randint(1, 10)
     hp = 100
-    #while True:
-       # try:
-         #   hp = int(input(f"Введите УРОВЕНЬ ЗДОРОВЬЯ героя: "))
-       # except ValueError:
-           # print("Ввести можно только числа. Повторите попытку: ")
-          #  continue
     player = struct_player(name, hp, damage, level, gold)
     print(f"\t[bold cyan]..персонаж[/] [bold magenta]{name}[/] [bold cyan]создаётся!\n\tЖдите...[/]")
     time.sleep(2)
     return player
+
+def create_hero_cycle():
+
+    total_heroes = count_heroes()
+    all_heroes = []
+
+    for i in range(total_heroes):
+        create_hero()
+        count =+ 1
+
+        
+
+
+    return
     
 def shop_items(hero):
     print(f"\n\n\n[bold cyan][МАГАЗИН][/] [bold white]{hero['name']}, ваш баланс:[/] [bold gold1]{hero['gold']}[/]")
